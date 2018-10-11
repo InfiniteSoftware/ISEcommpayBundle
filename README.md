@@ -4,5 +4,5 @@
 1. Create new project
 
 ```bash
-$ composer create-project payum/skeleton
+$ composer require infinite-software/ecommpay-payum
 ```
