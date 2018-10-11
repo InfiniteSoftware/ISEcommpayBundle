@@ -1,9 +1,9 @@
 {
-    "name": "infinite-software/is-ecommpay-bundle",
-    "type": "symfony-bundle",
-    "description": "Ecommpay payment system Payum extension for Symfony",
+    "name": "infinite-software/ecommpay-payum",
+    "type": "library",
+    "description": "Ecommpay Payum extension for Symfony",
     "keywords": ["payment"],
-    "homepage": "https://payum.forma-pro.com",
+    "homepage": "https://infinitesoftware.eu",
     "license": "MIT",
     "authors": [
         {
