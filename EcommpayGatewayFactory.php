@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Ecommpay;
 
 use Payum\Ecommpay\Action\AuthorizeAction;

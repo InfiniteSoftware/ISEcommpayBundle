@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Ecommpay\Action;
 
 use Payum\Core\Action\ActionInterface;
@@ -25,7 +26,6 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
 
         throw new \LogicException('Not implemented');
     }
-
     /**
      * {@inheritDoc}
      */
