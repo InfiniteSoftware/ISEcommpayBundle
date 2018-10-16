@@ -18,8 +18,9 @@ class StatusAction implements ActionInterface
         RequestNotSupportedException::assertSupports($this, $request);
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
+        $request->markNew();
 
-        throw new \LogicException('Not implemented');
+//        throw new \LogicException('Not implemented');
     }
 
     /**

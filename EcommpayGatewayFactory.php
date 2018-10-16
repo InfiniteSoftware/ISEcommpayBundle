@@ -41,7 +41,11 @@ class EcommpayGatewayFactory extends GatewayFactory
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
-                return new Api((array) $config, $config['payum.http_client'], $config['httplug.message_factory']);
+                return [
+                    'secretKey' => $config['secretKey'],
+                    'projectId' => $config['projectId'],
+                    'endpoint'  => 'https://paymentpage.ecommpay.com/payment?'
+                ];
             };
         }
     }

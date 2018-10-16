@@ -2,14 +2,29 @@
 namespace Payum\Ecommpay\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
+use Payum\Core\ApiAwareTrait;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
+use Sylius\Component\Core\Model\OrderInterface;
 
-class ConvertPaymentAction implements ActionInterface
+class ConvertPaymentAction implements ActionInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait;
+    use ApiAwareTrait;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setApi($api)
+    {
+        if (!is_array($api)) {
+            throw new UnsupportedApiException('Not supported.');
+        }
+
+        $this->api = $api;
+    }
 
     /**
      * {@inheritDoc}
@@ -23,7 +38,15 @@ class ConvertPaymentAction implements ActionInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getSource();
 
-        throw new \LogicException('Not implemented');
+        /** @var OrderInterface $order */
+        $params = [
+            'payment_id' => $payment->getNumber(),
+            'payment_amount' => $payment->getTotalAmount(),
+            'payment_currency' => $payment->getCurrencyCode(),
+            'project_id' => $this->api['projectId'],
+            'customer_id' => $payment->getClientId(),
+        ];
+        $request->setResult($params);
     }
 
     /**

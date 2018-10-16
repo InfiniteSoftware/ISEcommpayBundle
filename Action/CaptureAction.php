@@ -2,14 +2,31 @@
 namespace Payum\Ecommpay\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
+use Payum\Core\ApiAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Exception\UnsupportedApiException;
+use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Ecommpay\Action\Api\Signer;
 
-class CaptureAction implements ActionInterface
+class CaptureAction implements ActionInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait;
+    use ApiAwareTrait;
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setApi($api)
+    {
+        if (!is_array($api)) {
+            throw new UnsupportedApiException('Not supported.');
+        }
+
+        $this->api = $api;
+    }
 
     /**
      * {@inheritDoc}
@@ -22,7 +39,13 @@ class CaptureAction implements ActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        throw new \LogicException('Not implemented');
+        $model['signature'] = Signer::sign(
+            $model->toUnsafeArray(),
+            $this->api['secretKey']
+        );
+        dump($model->toUnsafeArray());
+
+        throw new HttpRedirect($this->api['endpoint'] . http_build_query($model));
     }
 
     /**
