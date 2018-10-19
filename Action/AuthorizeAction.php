@@ -3,16 +3,30 @@
 namespace Payum\Ecommpay\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
+use Payum\Core\ApiAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Ecommpay\Action\Api\Signer;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class AuthorizeAction implements ActionInterface, GatewayAwareInterface
+class AuthorizeAction implements ActionInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait;
+    use ApiAwareTrait;
 
+    /**
+     * {@inheritDoc}
+     */
+    public function setApi($api)
+    {
+        if (!is_array($api)) {
+            throw new UnsupportedApiException('Not supported.');
+        }
+
+        $this->api = $api;
+    }
     /**
      * {@inheritDoc}
      *
@@ -23,9 +37,16 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
         RequestNotSupportedException::assertSupports($this, $request);
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
+        $request = $model->get('request');
+        $signature = $request['signature'];
+        unset($request['signature']);
 
-        throw new \LogicException('Not implemented');
+        $mySignature = Signer::sign($request, $this->api['secretKey']);
+        if ($mySignature !== $signature) {
+            throw new BadRequestHttpException();
+        }
     }
+
     /**
      * {@inheritDoc}
      */

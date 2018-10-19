@@ -6,6 +6,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\ApiAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\UnsupportedApiException;
+use Payum\Core\Reply\HttpPostRedirect;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -43,9 +44,8 @@ class CaptureAction implements ActionInterface, ApiAwareInterface
             $model->toUnsafeArray(),
             $this->api['secretKey']
         );
-        dump($model->toUnsafeArray());
 
-        throw new HttpRedirect($this->api['endpoint'] . http_build_query($model));
+        throw new HttpPostRedirect($this->api['endpoint'], $model->toUnsafeArray());
     }
 
     /**
