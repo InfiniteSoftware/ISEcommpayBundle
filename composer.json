@@ -35,7 +35,7 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-4": { "Payum\\Ecommpay": "" }
+        "psr-4": { "Payum\\Ecommpay\\": "" }
     },
     "extra": {
         "branch-alias": {
