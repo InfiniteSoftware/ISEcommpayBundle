@@ -16,7 +16,6 @@ class CaptureAction implements ActionInterface, ApiAwareInterface
 {
     use ApiAwareTrait;
 
-
     /**
      * {@inheritDoc}
      */
