@@ -30,7 +30,7 @@ class NotifyAction implements ActionInterface, LoggerAwareInterface
     public function execute($request)
     {
         RequestNotSupportedException::assertSupports($this, $request);
-        $this->logger->info("Ecommpay order #{$request->getModel()->getNumber()} have paid");
+        $this->logger->info("Ecommpay order #{$request->getFirstModel()->getOrder()->getNumber()} have paid");
         throw new HttpResponse('OK');
     }
 
