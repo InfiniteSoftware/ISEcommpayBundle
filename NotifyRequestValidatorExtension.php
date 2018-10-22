@@ -17,7 +17,7 @@ use Sylius\Component\Payment\Model\PaymentInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 
-final class NotifyRequestValidator implements ExtensionInterface
+final class NotifyRequestValidatorExtension implements ExtensionInterface
 {
     /**
      * @var OrderRepositoryInterface
