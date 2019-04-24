@@ -23,6 +23,11 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
         ArrayObject::ensureArrayObject($request->getModel());
         $this->gateway->execute($status = new GetHttpRequest());
 
+        if (isset($status->request['operation']) === false) {
+            $request->markNew();
+            return;
+        }
+
         if (isset($status->request['operation']['status'])) {
             $status = $status->request['operation']['status'];
 
@@ -33,11 +38,8 @@ class StatusAction implements ActionInterface, GatewayAwareInterface
 
             if (EcommpayBridgeInterface::STATUS_DECLINE === $status) {
                 $request->markFailed();
-                return;
             }
         }
-
-        $request->markNew();
     }
 
     /**
