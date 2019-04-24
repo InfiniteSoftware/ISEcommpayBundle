@@ -11,6 +11,7 @@ use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
+use Payum\Ecommpay\Action\NotifyAction;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
@@ -49,6 +50,7 @@ final class NotifyRequestValidatorExtension implements ExtensionInterface
         if (!$context->getRequest() instanceof Notify) {
             return;
         }
+        $context->setAction(new NotifyAction());
         $context->getGateway()->execute($httpRequest = new GetHttpRequest());
         $context->getGateway()->execute(new Authorize(new ArrayObject($httpRequest)));
 
